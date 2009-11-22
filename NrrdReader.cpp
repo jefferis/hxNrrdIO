@@ -30,6 +30,20 @@ int NrrdReader(const char* filename)
 	if ( nrrdLoad( nrrd, filename, NULL ) )
 		throw biffGetDone(NRRD);
     
+    if ( nrrd->dim > 3 )
+	{
+		theMsg->printf("ERROR: for now, nrrd input can only handle data with dimension 3 or less.");
+		fclose(fp);
+		return 0;
+	}
+
+    const int dims[3] = 
+	{ 
+		(nrrd->dim > 0) ? nrrd->axis[0].size : 1,
+		(nrrd->dim > 1) ? nrrd->axis[1].size : 1,
+		(nrrd->dim > 2) ? nrrd->axis[2].size : 1 
+	};
+
     fclose(fp);
     
     if (data)

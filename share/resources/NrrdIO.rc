@@ -1,0 +1,12 @@
+################################################################################
+#
+# Resource file of custom package NrrdIO
+#
+################################################################################
+
+
+dataFile -name    "Nrrd" \
+         -option  "nrrd,nhdr" \
+         -ext     "nrrd,nhdr" \
+         -load    "NrrdReader" \
+         -package "NrrdIO"

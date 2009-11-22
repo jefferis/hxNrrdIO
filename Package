@@ -1,0 +1,12 @@
+set PACKAGE {NrrdIO}
+
+set INCLUDES { /usr/local/include }
+
+set LIBS {
+    hxplot hxtime hxsurface hxcolor hxfield
+    Amira amiramesh mclib oiv tcl z nrrd
+}
+
+set SHARE {
+    share/resources/NrrdIO.rc 
+}

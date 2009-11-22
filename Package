@@ -4,7 +4,7 @@ set INCLUDES { /usr/local/include }
 
 set LIBS {
     hxplot hxtime hxsurface hxcolor hxfield
-    Amira amiramesh mclib oiv tcl z nrrd
+    Amira amiramesh mclib oiv tcl z teem
 }
 
 set SHARE {

@@ -8,6 +8,7 @@
 #include <Amira/HxData.h>
 #include <Amira/HxMessage.h>
 #include <teem/nrrd.h>
+#include <zlib.h>
 
 NRRDIO_API
 int NrrdReader(const char* filename)

@@ -30,16 +30,26 @@ int NrrdReader(const char* filename)
 		(nrrd->dim > 2) ? nrrd->axis[2].size : 1 
 	};
 	
-	if(nrrd->type != nrrdTypeUChar)
+	HxUniformScalarField3* field = NULL;
+	
+	switch ( nrrd->type )
 	{
-		theMsg->printf("ERROR: for now, nrrd input can only uchar data.");
-		return 0;
+		case nrrdTypeUChar:  field = new HxUniformScalarField3(dims,MC_UINT8,nrrd->data); break;
+		case nrrdTypeChar:   field = new HxUniformScalarField3(dims,MC_INT8,nrrd->data); break;
+		case nrrdTypeUShort: field = new HxUniformScalarField3(dims,MC_UINT16,nrrd->data); break;
+		case nrrdTypeShort:  field = new HxUniformScalarField3(dims,MC_INT16,nrrd->data); break;
+		case nrrdTypeInt:    field = new HxUniformScalarField3(dims,MC_INT32,nrrd->data); break;
+		case nrrdTypeFloat:  field = new HxUniformScalarField3(dims,MC_FLOAT,nrrd->data); break;
+		case nrrdTypeDouble: field = new HxUniformScalarField3(dims,MC_DOUBLE,nrrd->data); break;
+		default: break;
 	}
 	
-	// Create a new scalar field (assume byte for now)
-	HxUniformScalarField3* field = 
-		new HxUniformScalarField3(dims,McPrimType::mc_uint8,nrrd->data);
-	
+	if(field == NULL)
+	{
+		theMsg->printf("ERROR: unknown nrrd input type.");
+		return 0;
+	}
+		
 	// Shouldn't need to check for data loading
 	HxData::registerData(field, filename);
 	

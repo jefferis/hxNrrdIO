@@ -35,26 +35,27 @@ int NrrdReader(const char* filename)
 		(nrrd->dim > 1) ? nrrd->axis[1].size : 1,
 		(nrrd->dim > 2) ? nrrd->axis[2].size : 1 
 	};
-	
-	HxUniformScalarField3* field = NULL;
-	
+		
+	McPrimType pType = NULL;
 	switch ( nrrd->type )
 	{
-		case nrrdTypeUChar:  field = new HxUniformScalarField3(dims,MC_UINT8,nrrd->data); break;
-		case nrrdTypeChar:   field = new HxUniformScalarField3(dims,MC_INT8,nrrd->data); break;
-		case nrrdTypeUShort: field = new HxUniformScalarField3(dims,MC_UINT16,nrrd->data); break;
-		case nrrdTypeShort:  field = new HxUniformScalarField3(dims,MC_INT16,nrrd->data); break;
-		case nrrdTypeInt:    field = new HxUniformScalarField3(dims,MC_INT32,nrrd->data); break;
-		case nrrdTypeFloat:  field = new HxUniformScalarField3(dims,MC_FLOAT,nrrd->data); break;
-		case nrrdTypeDouble: field = new HxUniformScalarField3(dims,MC_DOUBLE,nrrd->data); break;
+		case nrrdTypeUChar:  pType = MC_UINT8; break;
+		case nrrdTypeChar:   pType = MC_INT8;  break;
+		case nrrdTypeUShort: pType = MC_UINT16;break;
+		case nrrdTypeShort:  pType = MC_INT16; break;
+		case nrrdTypeInt:    pType = MC_INT32; break;
+		case nrrdTypeFloat:  pType = MC_FLOAT; break;
+		case nrrdTypeDouble: pType = MC_DOUBLE;break;
 		default: break;
 	}
 	
-	if(field == NULL)
+	if(pType == NULL)
 	{
 		theMsg->printf("ERROR: unknown nrrd input type.");
 		return 0;
 	}
+
+	HxUniformScalarField3* field = new HxUniformScalarField3(dims,pType,nrrd->data);
 	
 	// First fetch axis spacing
 	double spacing[3] = { 1.0, 1.0, 1.0 };

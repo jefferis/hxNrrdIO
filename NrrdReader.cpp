@@ -23,17 +23,21 @@ int NrrdReader(const char* filename)
 	if ( nrrdLoad( nrrd, filename, NULL ) )
 		throw biffGetDone(NRRD);
     
-    if ( nrrd->dim > 3 )
+    if ( nrrd->dim > 4 )
 	{
-		theMsg->printf("ERROR: for now, nrrd input can only handle data with dimension 3 or less.");
+		theMsg->printf("ERROR: for now, nrrd input can only handle data with dimension 4 or less.");
 		return 0;
+	} else if ( nrrd->spaceDim > 3 ){
+		theMsg->printf("ERROR: for now, nrrd input can only handle data with space dimension 3 or less.");
+		return 0;		
 	}
 	
-    const int dims[3] = 
+    const int dims[4] = 
 	{ 
 		(nrrd->dim > 0) ? nrrd->axis[0].size : 1,
 		(nrrd->dim > 1) ? nrrd->axis[1].size : 1,
-		(nrrd->dim > 2) ? nrrd->axis[2].size : 1 
+		(nrrd->dim > 2) ? nrrd->axis[2].size : 1,
+		(nrrd->dim > 3) ? nrrd->axis[3].size : 1 
 	};
 		
 	McPrimType pType = NULL;
@@ -59,8 +63,21 @@ int NrrdReader(const char* filename)
 	
 	// First fetch axis spacing
 	double spacing[3] = { 1.0, 1.0, 1.0 };
+	int firstSpaceAxis = -1;
+	int numSpaceAxesSoFar = 0;
+	int nonSpatialDimension = -1;
 	for ( size_t ax = 0; ax < nrrd->dim; ++ax )
 	{
+		switch ( nrrd->axis[ax].kind )
+		{
+			case nrrdKindUnknown:
+			case nrrdKindDomain:
+			case nrrdKindSpace: 
+			case nrrdKindTime: firstSpaceAxis=firstSpaceAxis<0?ax:firstSpaceAxis;
+							   numSpaceAxesSoFar++; break;
+			default: nonSpatialDimension = ax; continue;
+		}
+		
 		switch ( nrrdSpacingCalculate( nrrd, ax, spacing+ax, nrrd->axis[ax].spaceDirection ) )
 		{
 			case nrrdSpacingStatusScalarNoSpace:
@@ -78,6 +95,24 @@ int NrrdReader(const char* filename)
 				break;
 		}
 	}
+	if ( firstSpaceAxis < 0 || firstSpaceAxis >1 )
+	{
+		theMsg->printf("ERROR: Unable to identify first spatial axis in nrrd. Got %d\n", firstSpaceAxis);
+		return 0;
+	}
+	
+	// Figure out size of non-spatial dimension (ie vector, colour etc)
+	int nDataVar = 1;
+	if ( nonSpatialDimension == 0) nDataVar = dims[nonSpatialDimension];
+	else if ( nonSpatialDimension > 0) {
+		// At the moment we can't handle having the vector dimension come later because
+		// that would require shuffling the nrrd data block to prepare it for Amira
+		theMsg->printf("ERROR: Only nrrds with vector values in the 0th dimension (not %d) are currently supported\n", nonSpatialDimension);
+		return 0;
+	}
+	
+	// Now initialise lattice 
+	// HxLattice3* lattice = new HxLattice3(&dims[firstSpaceAxis], nDataVar, primType, otherLattice->coords()->duplicate());
 	
 	// Now let's set the physical dimensions
 	// This is done by defining the bounding box, the range of the voxel centres
@@ -88,9 +123,9 @@ int NrrdReader(const char* filename)
 	bbox[4] = isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
 	
 	// When a dimension is 1, Amira still seems to have a defined spacing
-	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0] == 1 ? 1 : (dims[0] - 1) );
-	bbox[3] = bbox[2] + (float) spacing[1] * ( dims[1] == 1 ? 1 : (dims[1] - 1) );
-	bbox[5] = bbox[4] + (float) spacing[2] * ( dims[2] == 1 ? 1 : (dims[2] - 1) );
+	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0+firstSpaceAxis] == 1 ? 1 : (dims[0+firstSpaceAxis] - 1) );
+	bbox[3] = bbox[2] + (float) spacing[1] * ( dims[1+firstSpaceAxis] == 1 ? 1 : (dims[1+firstSpaceAxis] - 1) );
+	bbox[5] = bbox[4] + (float) spacing[2] * ( dims[2+firstSpaceAxis] == 1 ? 1 : (dims[2+firstSpaceAxis] - 1) );
 	
 	// Shouldn't need to check for data loading
 	HxData::registerData(field, filename);

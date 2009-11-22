@@ -49,7 +49,42 @@ int NrrdReader(const char* filename)
 		theMsg->printf("ERROR: unknown nrrd input type.");
 		return 0;
 	}
-		
+	
+	// First fetch axis spacing
+	double spacing[3] = { 1.0, 1.0, 1.0 };
+	for ( size_t ax = 0; ax < nrrd->dim; ++ax )
+	{
+		switch ( nrrdSpacingCalculate( nrrd, ax, spacing+ax, nrrd->axis[ax].spaceDirection ) )
+		{
+			case nrrdSpacingStatusScalarNoSpace:
+				break;
+			case nrrdSpacingStatusDirection:
+				break;
+			case nrrdSpacingStatusScalarWithSpace:
+				theMsg->printf("WARNING: nrrdSpacingCalculate returned nrrdSpacingStatusScalarWithSpace\n");
+				spacing[ax] = nrrd->axis[ax].spacing;
+				break;
+			case nrrdSpacingStatusNone:
+			default:
+				theMsg->printf("WARNING: no pixel spacings in Nrrd for axis %d ; setting to 1.0\n",ax);
+				spacing[ax] = 1.0;
+				break;
+		}
+	}
+	
+	// Now let's set the physical dimensions
+	// This is done by defining the bounding box, the range of the voxel centres
+	// given in the order: xmin,xmax,ymin ...
+	float *bbox = field->bbox();
+	bbox[0] = isnan(nrrd->spaceOrigin[0])?0.0f:(float) nrrd->spaceOrigin[0];
+	bbox[2] = isnan(nrrd->spaceOrigin[1])?0.0f:(float) nrrd->spaceOrigin[1];
+	bbox[4] = isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
+	
+	// When a dimension is 1, Amira still seems to have a defined spacing
+	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0] == 1 ? 1 : (dims[0] - 1) );
+	bbox[3] = bbox[2] + (float) spacing[1] * ( dims[1] == 1 ? 1 : (dims[1] - 1) );
+	bbox[5] = bbox[4] + (float) spacing[2] * ( dims[2] == 1 ? 1 : (dims[2] - 1) );
+	
 	// Shouldn't need to check for data loading
 	HxData::registerData(field, filename);
 	

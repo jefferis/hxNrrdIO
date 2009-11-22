@@ -10,3 +10,11 @@ dataFile -name    "Nrrd" \
          -ext     "nrrd,nhdr" \
          -load    "NrrdReader" \
          -package "NrrdIO"
+
+
+dataFile -name    "Nrrd" \
+         -option  "nrrd" \
+         -ext     "nrrd" \
+         -save    "NrrdWriter" \
+         -type    "HxUniformScalarField3" \
+         -package "NrrdIO"

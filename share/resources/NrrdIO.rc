@@ -12,9 +12,23 @@ dataFile -name    "Nrrd" \
          -package "NrrdIO"
 
 
-dataFile -name    "Nrrd" \
+dataFile -name    "Nrrd binary" \
          -option  "nrrd" \
          -ext     ".nrrd" \
-         -save    "NrrdWriter" \
+         -save    "NrrdWriterRaw" \
+         -type    "HxUniformScalarField3" \
+         -package "NrrdIO"
+
+dataFile -name    "Nrrd gzip" \
+         -option  "nrrd" \
+         -ext     ".nrrd" \
+         -save    "NrrdWriterGzip" \
+         -type    "HxUniformScalarField3" \
+         -package "NrrdIO"
+
+dataFile -name    "Nrrd ascii" \
+         -option  "nrrd" \
+         -ext     ".nrrd" \
+         -save    "NrrdWriterAscii" \
          -type    "HxUniformScalarField3" \
          -package "NrrdIO"

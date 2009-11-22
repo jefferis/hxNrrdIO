@@ -10,10 +10,8 @@
 #include <hxfield/HxUniformScalarField3.h>
 #include <teem/nrrd.h>
 
-NRRDIO_API
-int NrrdWriter(HxUniformScalarField3* field, const char* filename)
+int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 {
-	int compressed = 0;
 	// Identify data type
 	int nrrdType = nrrdTypeUnknown;
 	switch ( field->primType() )
@@ -39,13 +37,25 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename)
 	Nrrd *nrrd = nrrdNew();
 	NrrdIoState *nios = nrrdIoStateNew();
 
-	if ( compressed ) {
+	if ( encoding == nrrdEncodingTypeGzip) {
 		if (nrrdEncodingGzip->available() )
 		{
 			nrrdIoStateEncodingSet( nios, nrrdEncodingGzip );
 			nrrdIoStateSet( nios, nrrdIoStateZlibLevel, 9 );
 		}
-		else theMsg->printf("WARNING: Nrrd library does not support Gzip compression encoding.\nPlease add -DTEEM_ZLIB to compiler options when building Nrrd library.\n");
+		else theMsg->printf("WARNING: Nrrd library does not support Gzip compression encoding.\n Make sure Teem_ZLIB is on in CMAKE when building Nrrd library.\n");
+	} else if ( encoding == nrrdEncodingTypeBzip2) {
+		if (nrrdEncodingBzip2->available() )
+		{
+			nrrdIoStateEncodingSet( nios, nrrdEncodingBzip2 );
+			// nrrdIoStateSet( nios, nrrdIoStateBzip2BlockSize, 9 );
+		}
+		else theMsg->printf("WARNING: Nrrd library does not support Bzip2 compression encoding.\n Make sure Teem_BZIP2 is on in CMAKE when building Nrrd library.\n");
+	} else if ( encoding == nrrdEncodingTypeAscii) {
+		nrrdIoStateEncodingSet( nios, nrrdEncodingAscii );
+	} else {
+		theMsg->printf("ERROR: Unimplemented nrrd encoding type: %d\n",encoding);
+		return 0;
 	}
 
 	try
@@ -113,4 +123,22 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename)
 	nrrdNix(nrrd);
 
     return 1; 
+}
+
+NRRDIO_API
+int NrrdWriterRaw(HxUniformScalarField3* field, const char* filename)
+{
+	return NrrdWriter(field, filename, nrrdEncodingTypeRaw);
+}
+
+NRRDIO_API
+int NrrdWriterGzip(HxUniformScalarField3* field, const char* filename)
+{
+	return NrrdWriter(field, filename, nrrdEncodingTypeGzip);
+}
+
+NRRDIO_API
+int NrrdWriterAscii(HxUniformScalarField3* field, const char* filename)
+{
+	return NrrdWriter(field, filename, nrrdEncodingTypeAscii);
 }

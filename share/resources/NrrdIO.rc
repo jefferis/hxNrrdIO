@@ -7,14 +7,14 @@
 
 dataFile -name    "Nrrd" \
          -option  "nrrd,nhdr" \
-         -ext     "nrrd,nhdr" \
+         -ext     ".nrrd,.nhdr" \
          -load    "NrrdReader" \
          -package "NrrdIO"
 
 
 dataFile -name    "Nrrd" \
          -option  "nrrd" \
-         -ext     "nrrd" \
+         -ext     ".nrrd" \
          -save    "NrrdWriter" \
          -type    "HxUniformScalarField3" \
          -package "NrrdIO"

@@ -1,6 +1,7 @@
 /////////////////////////////////////////////////////////////////
 /*
- *  Template of a write routine
+ *  Routines to write data in Nrrd format
+ *  Currently handles: raw, gzip and ascii encodings
  */
 /////////////////////////////////////////////////////////////////
 #include <hxNrrdIO/hxNrrdIOAPI.h>

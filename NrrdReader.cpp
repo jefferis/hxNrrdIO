@@ -2,7 +2,7 @@
 /*
  *  Amira Reader for the nrrd (Nearly Raw Raster Data) format:
  *  http://teem.sourceforge.net/nrrd/format.html
- *  Currently only supports 3d single channel data
+ *  Currently only supports 3d single channel data and 4d vector data
  *  Copyright 2009 Gregory Jefferis. All rights reserved.
  *  License GPL >=3
  *  Certain portions of this code were copied/amended from the CMTK

@@ -58,27 +58,23 @@ int NrrdReader(const char* filename)
 		theMsg->printf("ERROR: unknown nrrd input type.");
 		return 0;
 	}
-
-	HxUniformScalarField3* field = new HxUniformScalarField3(dims,pType,nrrd->data);
 	
 	// First fetch axis spacing
 	double spacing[3] = { 1.0, 1.0, 1.0 };
 	int firstSpaceAxis = -1;
 	int numSpaceAxesSoFar = 0;
 	int nonSpatialDimension = -1;
-	for ( size_t ax = 0; ax < nrrd->dim; ++ax )
+	for ( unsigned int ax = 0; ax < nrrd->dim; ++ax )
 	{
 		switch ( nrrd->axis[ax].kind )
 		{
 			case nrrdKindUnknown:
 			case nrrdKindDomain:
 			case nrrdKindSpace: 
-			case nrrdKindTime: firstSpaceAxis=firstSpaceAxis<0?ax:firstSpaceAxis;
-							   numSpaceAxesSoFar++; break;
+			case nrrdKindTime: firstSpaceAxis=firstSpaceAxis<0?ax:firstSpaceAxis; break;
 			default: nonSpatialDimension = ax; continue;
 		}
-		
-		switch ( nrrdSpacingCalculate( nrrd, ax, spacing+ax, nrrd->axis[ax].spaceDirection ) )
+		switch ( nrrdSpacingCalculate( nrrd, ax, spacing+numSpaceAxesSoFar, nrrd->axis[ax].spaceDirection ) )
 		{
 			case nrrdSpacingStatusScalarNoSpace:
 				break;
@@ -86,14 +82,15 @@ int NrrdReader(const char* filename)
 				break;
 			case nrrdSpacingStatusScalarWithSpace:
 				theMsg->printf("WARNING: nrrdSpacingCalculate returned nrrdSpacingStatusScalarWithSpace\n");
-				spacing[ax] = nrrd->axis[ax].spacing;
+				spacing[numSpaceAxesSoFar] = nrrd->axis[ax].spacing;
 				break;
 			case nrrdSpacingStatusNone:
 			default:
 				theMsg->printf("WARNING: no pixel spacings in Nrrd for axis %d ; setting to 1.0\n",ax);
-				spacing[ax] = 1.0;
+				spacing[numSpaceAxesSoFar] = 1.0;
 				break;
 		}
+		numSpaceAxesSoFar++;
 	}
 	if ( firstSpaceAxis < 0 || firstSpaceAxis >1 )
 	{
@@ -111,13 +108,13 @@ int NrrdReader(const char* filename)
 		return 0;
 	}
 	
-	// Now initialise lattice 
-	// HxLattice3* lattice = new HxLattice3(&dims[firstSpaceAxis], nDataVar, primType, otherLattice->coords()->duplicate());
+	// Initialise coordinates (these will be uniform) starting at first space axis
+	HxUniformCoord3* coord = new HxUniformCoord3(&dims[firstSpaceAxis]);
 	
 	// Now let's set the physical dimensions
 	// This is done by defining the bounding box, the range of the voxel centres
 	// given in the order: xmin,xmax,ymin ...
-	float *bbox = field->bbox();
+	float *bbox = coord->bbox();
 	bbox[0] = isnan(nrrd->spaceOrigin[0])?0.0f:(float) nrrd->spaceOrigin[0];
 	bbox[2] = isnan(nrrd->spaceOrigin[1])?0.0f:(float) nrrd->spaceOrigin[1];
 	bbox[4] = isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
@@ -126,6 +123,10 @@ int NrrdReader(const char* filename)
 	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0+firstSpaceAxis] == 1 ? 1 : (dims[0+firstSpaceAxis] - 1) );
 	bbox[3] = bbox[2] + (float) spacing[1] * ( dims[1+firstSpaceAxis] == 1 ? 1 : (dims[1+firstSpaceAxis] - 1) );
 	bbox[5] = bbox[4] + (float) spacing[2] * ( dims[2+firstSpaceAxis] == 1 ? 1 : (dims[2+firstSpaceAxis] - 1) );
+	
+	// Finally initialise lattice 
+	HxLattice3* lattice = new HxLattice3(nDataVar, pType, coord, nrrd->data);
+	HxField3* field = HxLattice3::create(lattice);
 	
 	// Shouldn't need to check for data loading
 	HxData::registerData(field, filename);

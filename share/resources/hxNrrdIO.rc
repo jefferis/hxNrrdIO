@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Resource file of custom package NrrdIO
+# Resource file of custom package hxNrrdIO
 #
 ################################################################################
 
@@ -9,7 +9,7 @@ dataFile -name    "Nrrd" \
          -option  "nrrd,nhdr" \
          -ext     ".nrrd,.nhdr" \
          -load    "NrrdReader" \
-         -package "NrrdIO"
+         -package "hxNrrdIO"
 
 
 dataFile -name    "Nrrd binary" \
@@ -17,18 +17,18 @@ dataFile -name    "Nrrd binary" \
          -ext     ".nrrd" \
          -save    "NrrdWriterRaw" \
          -type    "HxUniformScalarField3" \
-         -package "NrrdIO"
+         -package "hxNrrdIO"
 
 dataFile -name    "Nrrd gzip" \
          -option  "nrrd" \
          -ext     ".nrrd" \
          -save    "NrrdWriterGzip" \
          -type    "HxUniformScalarField3" \
-         -package "NrrdIO"
+         -package "hxNrrdIO"
 
 dataFile -name    "Nrrd ascii" \
          -option  "nrrd" \
          -ext     ".nrrd" \
          -save    "NrrdWriterAscii" \
          -type    "HxUniformScalarField3" \
-         -package "NrrdIO"
+         -package "hxNrrdIO"

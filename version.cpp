@@ -9,6 +9,6 @@
 #define V_VERSION_TAG   ""
 #define V_VENDOR        "Unknown"
 #define V_PRODUCT       "Custom Package"
-#define V_COMMENT       "NrrdIO"
+#define V_COMMENT       "hxNrrdIO"
 
 #include <taglib/version-impl.h>

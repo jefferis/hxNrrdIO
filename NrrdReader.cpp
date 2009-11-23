@@ -9,13 +9,13 @@
  *  library: http://www.nitrc.org/projects/cmtk/
  */
 /////////////////////////////////////////////////////////////////
-#include <NrrdIO/NrrdIOAPI.h>
+#include <hxNrrdIO/hxNrrdIOAPI.h>
 
 #include <hxfield/HxUniformScalarField3.h>
 #include <Amira/HxMessage.h>
 #include <teem/nrrd.h>
 
-NRRDIO_API
+HXNRRDIO_API
 int NrrdReader(const char* filename)
 {
 	

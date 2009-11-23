@@ -1,4 +1,4 @@
-set PACKAGE {NrrdIO}
+set PACKAGE {hxNrrdIO}
 
 set INCLUDES { /usr/local/include }
 
@@ -8,5 +8,5 @@ set LIBS {
 }
 
 set SHARE {
-    share/resources/NrrdIO.rc 
+    share/resources/hxNrrdIO.rc 
 }

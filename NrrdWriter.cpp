@@ -3,7 +3,7 @@
  *  Template of a write routine
  */
 /////////////////////////////////////////////////////////////////
-#include <NrrdIO/NrrdIOAPI.h>
+#include <hxNrrdIO/hxNrrdIOAPI.h>
 
 #include <Amira/HxData.h>
 #include <Amira/HxMessage.h>
@@ -114,7 +114,7 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
     }
 	catch ( char* err )
     {
-		theMsg->printf("ERROR: NrrdIO library returned error '%s'\n", err);
+		theMsg->printf("ERROR: hxNrrdIO library returned error '%s'\n", err);
 		free( err );
 		return 0;
     }
@@ -125,19 +125,19 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
     return 1; 
 }
 
-NRRDIO_API
+HXNRRDIO_API
 int NrrdWriterRaw(HxUniformScalarField3* field, const char* filename)
 {
 	return NrrdWriter(field, filename, nrrdEncodingTypeRaw);
 }
 
-NRRDIO_API
+HXNRRDIO_API
 int NrrdWriterGzip(HxUniformScalarField3* field, const char* filename)
 {
 	return NrrdWriter(field, filename, nrrdEncodingTypeGzip);
 }
 
-NRRDIO_API
+HXNRRDIO_API
 int NrrdWriterAscii(HxUniformScalarField3* field, const char* filename)
 {
 	return NrrdWriter(field, filename, nrrdEncodingTypeAscii);

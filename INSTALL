@@ -9,8 +9,7 @@ To install, copy the library files (.dylib) and the resource files (.rc) into:
 respectively.
 
 ====== BUILDING FROM SOURCE ======
-
-Although everything should work on linux or Windows, my only experience is with Mac.
+Although everything should work on Linux or Windows, my only experience is with Mac.
 
 ===== Mac Setup =====
 1) AmiraDev 5.2.2

@@ -7,6 +7,7 @@ to read data in the Nrrd (Nearly Raw Raster Data) format:
 For installation instructions, see INSTALL.
 
 ====== Limitations ======
+  * VERY LIMITED TESTING SO FAR!
   * Currently only reads 3d (scalar) and 4d (vector) fields
   * Only writes 3d data 
 

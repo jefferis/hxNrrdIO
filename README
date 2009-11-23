@@ -11,6 +11,9 @@ For installation instructions, see INSTALL.
   * Currently only reads 3d (scalar) and 4d (vector) fields
   * Only writes 3d data 
 
+====== History ======
+  * v0.1 - first release
+
 ====== License ======
   * Currently GPL >=3 but I hope to change this to something probably more appropriate (eg LGPL 2) in due course.
 

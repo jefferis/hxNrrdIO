@@ -15,7 +15,8 @@ For installation instructions, see INSTALL.
   * v0.1 - first release
 
 ====== License ======
-  * Currently GPL >=3 but I hope to change this to something probably more appropriate (eg LGPL 2) in due course.
+  * LGPL 2.1 (see LICENSE file)
+  * Note that as of 20091123 Torsten Rohlfing has explicitly waived the GPLv3 license on the CMTK code that I altered.
 
 ====== Author ======
 (c) Gregory Jefferis (jefferis@gmail.com) 2009

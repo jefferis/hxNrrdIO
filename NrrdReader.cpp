@@ -39,21 +39,23 @@ int NrrdReader(const char* filename)
 		(nrrd->dim > 2) ? nrrd->axis[2].size : 1,
 		(nrrd->dim > 3) ? nrrd->axis[3].size : 1 
 	};
+	
+	theMsg->printf("nrrd type is: %d\n",nrrd->type);
 		
-	McPrimType pType = NULL;
+	int pType = -1;
 	switch ( nrrd->type )
 	{
-		case nrrdTypeUChar:  pType = MC_UINT8; break;
-		case nrrdTypeChar:   pType = MC_INT8;  break;
-		case nrrdTypeUShort: pType = MC_UINT16;break;
-		case nrrdTypeShort:  pType = MC_INT16; break;
-		case nrrdTypeInt:    pType = MC_INT32; break;
-		case nrrdTypeFloat:  pType = MC_FLOAT; break;
-		case nrrdTypeDouble: pType = MC_DOUBLE;break;
+		case nrrdTypeUChar:  pType = McPrimType::mc_uint8; break;
+		case nrrdTypeChar:   pType = McPrimType::mc_int8;  break;
+		case nrrdTypeUShort: pType = McPrimType::mc_uint16;break;
+		case nrrdTypeShort:  pType = McPrimType::mc_int16; break;
+		case nrrdTypeInt:    pType = McPrimType::mc_int32; break;
+		case nrrdTypeFloat:  pType = McPrimType::mc_float; break;
+		case nrrdTypeDouble: pType = McPrimType::mc_double;break;
 		default: break;
 	}
 	
-	if(pType == NULL)
+	if(pType < 0)
 	{
 		theMsg->printf("ERROR: unknown nrrd input type.");
 		return 0;

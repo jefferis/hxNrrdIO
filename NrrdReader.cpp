@@ -4,7 +4,7 @@
  *  http://teem.sourceforge.net/nrrd/format.html
  *  Currently only supports 3d single channel data and 4d vector data
  *  Copyright 2009 Gregory Jefferis. All rights reserved.
- *  License GPL >=3
+ *  License LGPL >=2.1
  *  Certain portions of this code were copied/amended from the CMTK
  *  library: http://www.nitrc.org/projects/cmtk/
  */

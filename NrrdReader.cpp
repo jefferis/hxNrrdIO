@@ -40,8 +40,6 @@ int NrrdReader(const char* filename)
 		(nrrd->dim > 3) ? nrrd->axis[3].size : 1 
 	};
 	
-	theMsg->printf("nrrd type is: %d\n",nrrd->type);
-		
 	int pType = -1;
 	switch ( nrrd->type )
 	{

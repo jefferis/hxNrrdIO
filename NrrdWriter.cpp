@@ -96,6 +96,7 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 			for ( int j = 0; j < 3; ++j )
 			{
 				if (i == j) spaceDir[i][j] = (double) voxelSize[i];
+				else spaceDir[i][j] = 0.0; // Can't assume that memory is zeroed
 			}
 		}
 		nrrdAxisInfoSet_nva( nrrd, nrrdAxisInfoSpaceDirection, spaceDir );

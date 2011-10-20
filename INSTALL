@@ -20,6 +20,7 @@ Although everything should work on Linux or Windows, my only experience is with 
 ===== Build teem =====
 1) follow teem's cmake installation build instructions. Basically
   mkdir build
+  cd build
   ccmake .. # to configure, see 2 below
   make 
 2) Make sure you build shared libraries (you can choose to in ccmake)

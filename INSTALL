@@ -20,6 +20,9 @@ Although everything should work on Linux or Windows, my only experience is with 
 ===== Prerequisites =====
 1) You need an Amira Developer license
 2) Install Xcode and cmake if you do not have them
+3) Xcode v4 apparently does not install GCC by default
+  see http://stackoverflow.com/questions/9998384/how-to-install-gcc-in-mac-os-x-lion for how to do this.
+
 
 ===== Build teem =====
 1) follow teem's cmake installation build instructions. Basically

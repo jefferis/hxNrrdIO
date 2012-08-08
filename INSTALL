@@ -12,10 +12,14 @@ respectively.
 Although everything should work on Linux or Windows, my only experience is with Mac.
 
 ===== Mac Setup =====
-1) AmiraDev 5.2.2
-2) Apple's Xcode >=3.1
-3) Cmake >= 2.4
+1) AmiraDev (Tested with 5.2.2 and 5.3.3)
+2) Apple's Xcode >=3.1 (http://developer.apple.com/xcode/)
+3) Cmake >= 2.4 (http://www.cmake.org)
 4) teem >= 1.10.0 (http://teem.sourceforge.net/)
+
+===== Prerequisites =====
+1) You need an Amira Developer license
+2) Install Xcode and cmake if you do not have them
 
 ===== Build teem =====
 1) follow teem's cmake installation build instructions. Basically

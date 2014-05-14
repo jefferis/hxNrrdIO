@@ -115,9 +115,9 @@ int NrrdReader(const char* filename)
 	// This is done by defining the bounding box, the range of the voxel centres
 	// given in the order: xmin,xmax,ymin ...
 	float *bbox = coord->bbox();
-	bbox[0] = isnan(nrrd->spaceOrigin[0])?0.0f:(float) nrrd->spaceOrigin[0];
-	bbox[2] = isnan(nrrd->spaceOrigin[1])?0.0f:(float) nrrd->spaceOrigin[1];
-	bbox[4] = isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
+	bbox[0] = std::isnan(nrrd->spaceOrigin[0])?0.0f:(float) nrrd->spaceOrigin[0];
+	bbox[2] = std::isnan(nrrd->spaceOrigin[1])?0.0f:(float) nrrd->spaceOrigin[1];
+	bbox[4] = std::isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
 	
 	// When a dimension is 1, Amira still seems to have a defined spacing
 	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0+firstSpaceAxis] == 1 ? 1 : (dims[0+firstSpaceAxis] - 1) );

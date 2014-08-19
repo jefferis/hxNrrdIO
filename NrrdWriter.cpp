@@ -6,8 +6,8 @@
 /////////////////////////////////////////////////////////////////
 #include <hxNrrdIO/hxNrrdIOAPI.h>
 
-#include <Amira/HxData.h>
-#include <Amira/HxMessage.h>
+#include <hxcore/HxData.h>
+#include <hxcore/HxMessage.h>
 #include <hxfield/HxUniformScalarField3.h>
 #include <teem/nrrd.h>
 

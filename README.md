@@ -33,21 +33,22 @@ Although everything should work on Linux or Windows, my only experience is with 
   * teem >= 1.10.0 (http://teem.sourceforge.net/)
 
 #### Build teem ####
-  1. Follow teem's cmake installation build instructions. Basically:
+1. Follow teem's cmake installation build instructions. Basically:
+
   ```
   mkdir build
   cd build
   ccmake .. # to configure, see 2 below
   make
   ```
-  2. Make sure you build shared libraries (you can choose to in ccmake).
-  3. Install into ``/usr/local/teem`` (the default).
+2. Make sure you build shared libraries (you can choose to in ccmake).
+3. Install into ``/usr/local/teem`` (the default).
 
 #### Build hxNrrdIO ####
-  1. Make an Amira local directory using the Development Wizard.
-  2. Use git to clone the ``hxNrrdIO`` repository into the ``src`` subdirectory (or extract a tar ball).
-  3. Make the build files using the Development Wizard in Amira.
-  4. Edit the ``src/hxNrrdIO/GNUmakefile`` produced such that:
+1. Make an Amira local directory using the Development Wizard.
+2. Use git to clone the ``hxNrrdIO`` repository into the ``src`` subdirectory (or extract a tar ball).
+3. Make the build files using the Development Wizard in Amira.
+4. Edit the ``src/hxNrrdIO/GNUmakefile`` produced such that:
   ```
   HX_SDKROOT = /Developer/SDKs/MacOSX10.6.sdk
   ```
@@ -55,27 +56,29 @@ Although everything should work on Linux or Windows, my only experience is with 
   ```
   HX_SDKROOT = /Developer/SDKs/MacOSX10.8.sdk
   ```
-  5. Edit the file further such that:
+
+5. Edit the file further such that:
   ```
   ifdef HX_COMPILER_gcc42
       LDFLAGS += -fopenmp
       HXFLAGS += -fopenmp
   endif
   ```
-  becomes:
+becomes:
   ```
   ifdef HX_COMPILER_gcc42
       LDFLAGS += -openmp
       HXFLAGS += -openmp
   endif
   ```
-  6. Edit ``/Applications/Amira-5.6.0/include/mclib/McMath.h`` and replace all occurances of ``_mm_cvtss_si64x`` with ``_mm_cvtss_si64`` and all occurances of ``_mm_cvttsd_si64x`` with ``_mm_cvttsd_si64``.
-  7. Go back to your top-level directory and build with:
+6. Edit ``/Applications/Amira-5.6.0/include/mclib/McMath.h`` and replace all occurances of ``_mm_cvtss_si64x`` with ``_mm_cvtss_si64`` and all occurances of ``_mm_cvttsd_si64x`` with ``_mm_cvttsd_si64``.
+7. Go back to your top-level directory and build with:
+
   ```
   make MAKE_CFG=Optimize
   ```
   It is likely you will receive some errors regarding building documentation, but by this point the necessary ``.dylib`` and ``.rc`` files have been created in ``lib/arch-MacX-optimize`` and ``share/resources``, respectively.
-  8. Restart Amira to test
+8. Restart Amira to test.
 
 ## License ##
   * LGPL 2.1 (see LICENSE file)

@@ -12,7 +12,7 @@
 #include <hxNrrdIO/hxNrrdIOAPI.h>
 
 #include <hxfield/HxUniformScalarField3.h>
-#include <Amira/HxMessage.h>
+#include <hxcore/HxMessage.h>
 #include <teem/nrrd.h>
 
 HXNRRDIO_API

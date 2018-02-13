@@ -52,6 +52,8 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 			// nrrdIoStateSet( nios, nrrdIoStateBzip2BlockSize, 9 );
 		}
 		else theMsg->printf("WARNING: Nrrd library does not support Bzip2 compression encoding.\n Make sure Teem_BZIP2 is on in CMAKE when building Nrrd library.\n");
+	} else if ( encoding == nrrdEncodingTypeRaw) {
+		// Do nothing (the default)
 	} else if ( encoding == nrrdEncodingTypeAscii) {
 		nrrdIoStateEncodingSet( nios, nrrdEncodingAscii );
 	} else {

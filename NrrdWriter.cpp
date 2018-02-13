@@ -33,7 +33,7 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 		return 0;
 	}
 
-	void* data = field->lattice.dataPtr();
+	void* data = field->lattice().dataPtr();
 
 	Nrrd *nrrd = nrrdNew();
 	NrrdIoState *nios = nrrdIoStateNew();
@@ -61,10 +61,12 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 
 	try
 	{
+		McDim3l dims = field->lattice().getDims();
+
 		if ( nrrdWrap_va( nrrd, data, nrrdType, (size_t)3,
-		    (size_t)field->lattice.dimsInt()[0],
-		    (size_t)field->lattice.dimsInt()[1],
-		    (size_t)field->lattice.dimsInt()[2] ) )
+		    (size_t)dims[0],
+		    (size_t)dims[1],
+		    (size_t)dims[2] ) )
 		{
 			throw( biffGetDone(NRRD) );
 		}
@@ -85,7 +87,7 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 		// TODO: Would be nice to write some kind of space if this exists
 
 		// Fetch bounding box information and voxel size
-		float* bbox = field->bbox();
+		McBox3f bbox = field->getBoundingBox();
 		McVec3f voxelSize = field->getVoxelSize();
 
 		// Just deal with space directions orthogonal to data axes

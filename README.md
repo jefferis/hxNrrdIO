@@ -27,22 +27,12 @@ respectively.
 Although everything should work on Linux or Windows, my only experience is with Mac.
 
 #### Mac Setup ####
-  * AmiraDev (Tested with 5.6)
-  * Apple's Xcode 5 (http://developer.apple.com/xcode/)
-  * Cmake >= 2.4 (http://www.cmake.org)
-  * teem >= 1.10.0 (http://teem.sourceforge.net/)
+  * AmiraDev (Tested with 6.4)
+  * Apple's Xcode 9.2 (http://developer.apple.com/xcode/)
+  * teem >= 1.11.0 (homebrew)
 
 #### Build teem ####
-1. Follow teem's cmake installation build instructions. Basically:
-
-  ```
-  mkdir build
-  cd build
-  ccmake .. # to configure, see 2 below
-  make
-  ```
-2. Make sure you build shared libraries (you can choose to in ccmake).
-3. Install into ``/usr/local/teem`` (the default).
+1. `brew install teem`
 
 #### Build hxNrrdIO ####
 1. Make an Amira local directory using the Development Wizard.
@@ -50,28 +40,34 @@ Although everything should work on Linux or Windows, my only experience is with 
 3. Make the build files using the Development Wizard in Amira.
 4. Edit the ``src/hxNrrdIO/GNUmakefile`` produced such that:
   ```
-  HX_SDKROOT = /Developer/SDKs/MacOSX10.6.sdk
+  HX_SDKROOT = $(HX_XCODE_DEVELOPER_ROOT)/SDKs/MacOSX10.7.sdk
   ```
-  points to the 10.8 SDK (perhaps via a symlink to ``/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/``), giving a line such as:
+  points to a current SDK, giving a line such as:
   ```
-  HX_SDKROOT = /Developer/SDKs/MacOSX10.8.sdk
+  HX_SDKROOT = $(HX_XCODE_DEVELOPER_ROOT)/SDKs/MacOSX.sdk
   ```
 
-5. Edit the file further such that:
+5. Edit the file further to disable openmp when compiling using clang:
+  Change:
+
   ```
-  ifdef HX_COMPILER_gcc42
-      LDFLAGS += -fopenmp
-      HXFLAGS += -fopenmp
-  endif
+  HX_OPENMP_FLAG = $(shell $(CXX) --help -v 2>&1 | grep -q fopenmp && echo "-fopenmp")
   ```
-becomes:
+
+  to
+
   ```
-  ifdef HX_COMPILER_gcc42
-      LDFLAGS += -openmp
-      HXFLAGS += -openmp
-  endif
+  HX_OPENMP_FLAG = ""
   ```
-6. Edit ``/Applications/Amira-5.6.0/include/mclib/McMath.h`` and replace all occurances of ``_mm_cvtss_si64x`` with ``_mm_cvtss_si64`` and all occurances of ``_mm_cvttsd_si64x`` with ``_mm_cvttsd_si64``.
+
+6. Edit the file one more time to ensure that lib teem is found in /usr/local/lib
+  
+  Add somewhere after the last place in which LDFLAGS is set (i.e. a line beginning `LDFLAGS +=`)
+
+  ```
+  LDFLAGS += -L/usr/local/lib
+  ```
+
 7. Go back to your top-level directory and build with:
 
   ```

@@ -17,13 +17,13 @@ int NrrdWriter(HxUniformScalarField3* field, const char* filename, int encoding)
 	int nrrdType = nrrdTypeUnknown;
 	switch ( field->primType() )
     {
-		case McPrimType::mc_uint8:  nrrdType = nrrdTypeUChar; break;
-		case McPrimType::mc_int8:   nrrdType = nrrdTypeChar; break;
-		case McPrimType::mc_uint16: nrrdType = nrrdTypeUShort; break;
-		case McPrimType::mc_int16:  nrrdType = nrrdTypeShort; break;
-		case McPrimType::mc_int32:  nrrdType = nrrdTypeInt; break;
-		case McPrimType::mc_float:  nrrdType = nrrdTypeFloat; break;
-		case McPrimType::mc_double: nrrdType = nrrdTypeDouble; break;
+		case McPrimType::MC_UINT8:  nrrdType = nrrdTypeUChar; break;
+		case McPrimType::MC_INT8:   nrrdType = nrrdTypeChar; break;
+		case McPrimType::MC_UINT16: nrrdType = nrrdTypeUShort; break;
+		case McPrimType::MC_INT16:  nrrdType = nrrdTypeShort; break;
+		case McPrimType::MC_INT32:  nrrdType = nrrdTypeInt; break;
+		case McPrimType::MC_FLOAT:  nrrdType = nrrdTypeFloat; break;
+		case McPrimType::MC_DOUBLE: nrrdType = nrrdTypeDouble; break;
 		default: break;
     }
 

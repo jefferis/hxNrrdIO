@@ -114,7 +114,7 @@ int NrrdReader(const char* filename)
 	// Now let's set the physical dimensions
 	// This is done by defining the bounding box, the range of the voxel centres
 	// given in the order: xmin,xmax,ymin ...
-	float *bbox = coord->bbox();
+	McBox3f bbox = coord->getBoundingBox();
 	bbox[0] = std::isnan(nrrd->spaceOrigin[0])?0.0f:(float) nrrd->spaceOrigin[0];
 	bbox[2] = std::isnan(nrrd->spaceOrigin[1])?0.0f:(float) nrrd->spaceOrigin[1];
 	bbox[4] = std::isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
@@ -123,6 +123,7 @@ int NrrdReader(const char* filename)
 	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0+firstSpaceAxis] == 1 ? 1 : (dims[0+firstSpaceAxis] - 1) );
 	bbox[3] = bbox[2] + (float) spacing[1] * ( dims[1+firstSpaceAxis] == 1 ? 1 : (dims[1+firstSpaceAxis] - 1) );
 	bbox[5] = bbox[4] + (float) spacing[2] * ( dims[2+firstSpaceAxis] == 1 ? 1 : (dims[2+firstSpaceAxis] - 1) );
+	coord->setBoundingBox(bbox);
 	
 	// Finally initialise lattice 
 	HxLattice3* lattice = new HxLattice3(nDataVar, pType, coord, nrrd->data);

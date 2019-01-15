@@ -14,6 +14,7 @@
 #include <hxfield/HxUniformScalarField3.h>
 #include <hxcore/HxMessage.h>
 #include <teem/nrrd.h>
+#include <hxqt/QxStringUtils.h>
 
 HXNRRDIO_API
 int NrrdReader(const char* filename)
@@ -130,7 +131,7 @@ int NrrdReader(const char* filename)
 	HxField3* field = HxLattice3::create(lattice);
 	
 	// Shouldn't need to check for data loading
-	HxData::registerData(field, filename);
+	HxData::registerData(field, toQString(filename));
 	
     return 1;
 }

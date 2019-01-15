@@ -18,8 +18,8 @@ For installation on non-Mac-OS-X-10.9 systems (i.e. using gcc rather than clang)
 ### Installing built files ###
 Copy the library files (``.dylib``) and the resource files (``.rc``) into:
 
-  /Applications/Amira-5.6/lib/arch-MacX-Optimize
-  /Applications/Amira-5.6/share/resources
+  /Applications/Amira-XXX/lib/arch-MacX-Optimize
+  /Applications/Amira-XXX/share/resources
 
 respectively.
 
@@ -27,7 +27,8 @@ respectively.
 Although everything should work on Linux or Windows, my only experience is with Mac.
 
 #### Mac Setup ####
-  * AmiraDev (Tested with 6.4)
+  * MacOSX 10.12
+  * AmiraDev (Tested with 6.7)
   * Apple's Xcode 9.2 (http://developer.apple.com/xcode/)
   * teem >= 1.11.0 (homebrew)
 
@@ -37,17 +38,14 @@ Although everything should work on Linux or Windows, my only experience is with 
 #### Build hxNrrdIO ####
 1. Make an Amira local directory using the Development Wizard.
 2. Use git to clone the ``hxNrrdIO`` repository into the ``src`` subdirectory (or extract a tar ball).
-3. Make the build files using the Development Wizard in Amira.
-4. Edit the ``src/hxNrrdIO/GNUmakefile`` produced such that:
-  ```
-  HX_SDKROOT = $(HX_XCODE_DEVELOPER_ROOT)/SDKs/MacOSX10.7.sdk
-  ```
-  points to a current SDK, giving a line such as:
-  ```
-  HX_SDKROOT = $(HX_XCODE_DEVELOPER_ROOT)/SDKs/MacOSX.sdk
-  ```
-
-5. Edit the file further to disable openmp when compiling using clang:
+3. Edit ``/Applications/Amira-6.7.0/share/devtools/helpers.tcl`` to change line
+   ```
+   defOption "macsdk" {10.11 10.12} \
+   # to 
+   defOption "macsdk" {10.11 10.12 10.13 10.14} \
+   ```
+4. Make the build files using the Development Wizard in Amira.
+5. (Prob not required) Edit the file further to disable openmp when compiling using clang:
   Change:
 
   ```
@@ -66,6 +64,7 @@ Although everything should work on Linux or Windows, my only experience is with 
 
   ```
   LDFLAGS += -L/usr/local/lib
+  LDFLAGS += -Wl,-F$(HX_XCODE_DEVELOPER_ROOT)/../../../../SharedFrameworks
   ```
 
 7. Go back to your top-level directory and build with:

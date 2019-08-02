@@ -14,6 +14,7 @@
 #include <hxfield/HxUniformScalarField3.h>
 #include <hxcore/HxMessage.h>
 #include <teem/nrrd.h>
+#include <hxqt/QxStringUtils.h>
 
 HXNRRDIO_API
 int NrrdReader(const char* filename)
@@ -43,13 +44,13 @@ int NrrdReader(const char* filename)
 	int pType = -1;
 	switch ( nrrd->type )
 	{
-		case nrrdTypeUChar:  pType = McPrimType::mc_uint8; break;
-		case nrrdTypeChar:   pType = McPrimType::mc_int8;  break;
-		case nrrdTypeUShort: pType = McPrimType::mc_uint16;break;
-		case nrrdTypeShort:  pType = McPrimType::mc_int16; break;
-		case nrrdTypeInt:    pType = McPrimType::mc_int32; break;
-		case nrrdTypeFloat:  pType = McPrimType::mc_float; break;
-		case nrrdTypeDouble: pType = McPrimType::mc_double;break;
+		case nrrdTypeUChar:  pType = McPrimType::MC_UINT8; break;
+		case nrrdTypeChar:   pType = McPrimType::MC_INT8;  break;
+		case nrrdTypeUShort: pType = McPrimType::MC_UINT16;break;
+		case nrrdTypeShort:  pType = McPrimType::MC_INT16; break;
+		case nrrdTypeInt:    pType = McPrimType::MC_INT32; break;
+		case nrrdTypeFloat:  pType = McPrimType::MC_FLOAT; break;
+		case nrrdTypeDouble: pType = McPrimType::MC_DOUBLE;break;
 		default: break;
 	}
 	
@@ -114,7 +115,7 @@ int NrrdReader(const char* filename)
 	// Now let's set the physical dimensions
 	// This is done by defining the bounding box, the range of the voxel centres
 	// given in the order: xmin,xmax,ymin ...
-	float *bbox = coord->bbox();
+	McBox3f bbox = coord->getBoundingBox();
 	bbox[0] = std::isnan(nrrd->spaceOrigin[0])?0.0f:(float) nrrd->spaceOrigin[0];
 	bbox[2] = std::isnan(nrrd->spaceOrigin[1])?0.0f:(float) nrrd->spaceOrigin[1];
 	bbox[4] = std::isnan(nrrd->spaceOrigin[2])?0.0f:(float) nrrd->spaceOrigin[2];
@@ -123,13 +124,14 @@ int NrrdReader(const char* filename)
 	bbox[1] = bbox[0] + (float) spacing[0] * ( dims[0+firstSpaceAxis] == 1 ? 1 : (dims[0+firstSpaceAxis] - 1) );
 	bbox[3] = bbox[2] + (float) spacing[1] * ( dims[1+firstSpaceAxis] == 1 ? 1 : (dims[1+firstSpaceAxis] - 1) );
 	bbox[5] = bbox[4] + (float) spacing[2] * ( dims[2+firstSpaceAxis] == 1 ? 1 : (dims[2+firstSpaceAxis] - 1) );
+	coord->setBoundingBox(bbox);
 	
 	// Finally initialise lattice 
 	HxLattice3* lattice = new HxLattice3(nDataVar, pType, coord, nrrd->data);
 	HxField3* field = HxLattice3::create(lattice);
 	
 	// Shouldn't need to check for data loading
-	HxData::registerData(field, filename);
+	HxData::registerData(field, toQString(filename));
 	
     return 1;
 }

@@ -32,3 +32,19 @@ dataFile -name    "Nrrd ascii" \
          -save    "NrrdWriterAscii" \
          -type    "HxUniformScalarField3" \
          -package "hxNrrdIO"
+
+
+module -name     "hxNrrdIO" \
+       -primary  "HxUniformScalarField3" \
+       -class    "hxNrrdIO" \
+       -category "Local" \
+       -package  "hxNrrdIO" \
+       -icon     "TVDefDisplay"
+
+
+module -name     "hxnrrd" \
+       -primary  "HxUniformScalarField3" \
+       -class    "hx" \
+       -category "Local" \
+       -package  "hxNrrdIO" \
+       -icon     "TVDefDisplay"

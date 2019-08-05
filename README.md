@@ -45,6 +45,14 @@ Although everything should work on Linux or Windows, my only experience is with 
    defOption "macsdk" {10.11 10.12 10.13 10.14} \
    ```
 4. Make the build files using the Development Wizard in Amira.
+4'. (For Linux) ensure that lib teem is found in the local build just created  .../lib/arch-LinuxAMD64-Optimize
+
+```.../lib/arch-LinuxAMD64-Optimize$ls```
+Should return
+```libhxNrrdIO.so libteem.so libteem.so.1 libteem.so.1.12.0```
+If not, in /lib/arch-LinuxAMD64-Optimize:
+``` ln -s /usr/local/lib/libteem.so*```
+
 5. (Prob not required) Edit the file further to disable openmp when compiling using clang:
   Change:
 

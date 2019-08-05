@@ -45,6 +45,7 @@ Although everything should work on Linux or Windows, my only experience is with 
    defOption "macsdk" {10.11 10.12 10.13 10.14} \
    ```
 4. Make the build files using the Development Wizard in Amira.
+
 4'. (For Linux) ensure that lib teem is found in the local build just created  .../lib/arch-LinuxAMD64-Optimize
 
 ```

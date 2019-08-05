@@ -46,7 +46,7 @@ Although everything should work on Linux or Windows, my only experience is with 
    ```
 4. Make the build files using the Development Wizard in Amira.
 
-4'. (For Linux) ensure that lib teem is found in the local build just created  .../lib/arch-LinuxAMD64-Optimize
+4.1 (For Linux) ensure that lib teem is found in the local build just created  .../lib/arch-LinuxAMD64-Optimize
 
 ```
 .../lib/arch-LinuxAMD64-Optimize$ls
